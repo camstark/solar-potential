@@ -1,0 +1,51 @@
+<html>
+<head>
+  <title>Calgary Solar Potential</title>
+  <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.js'></script>
+  <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.39.1/mapbox-gl.css' rel='stylesheet' />
+  <style>
+    #map{ height: 100% }
+  </style>
+</head>
+<body>
+
+  <div id="map"></div>
+
+  <script>
+
+  mapboxgl.accessToken = 'pk.eyJ1IjoiY2Ftc3RhcmsiLCJhIjoiY2o2Y3o5bHFlMXp2MjM2bjZueTFtc3JneSJ9.qhidREzUi4mgVV1vCBmuxg';
+  var map = new mapboxgl.Map({
+      container: 'map', // container id
+      style: 'mapbox://styles/mapbox/dark-v9', //stylesheet location
+      center: [-114.0752,51.0470], // starting position
+      zoom: 10, // starting zoom
+      minZoom: 9, //minimum zoom
+      maxZoom: 19, //maximum zoom
+      attributionControl: false,
+      hash: true
+  });
+  map.addControl(new mapboxgl.NavigationControl());
+  map.addControl(new mapboxgl.AttributionControl({
+    compact: true
+  }));
+
+  map.on('load', function(){
+      map.addSource('raster-tiles', {
+          type: "raster",
+          attribution: '<a href="https://data.calgary.ca/Environment/Solar-Potential-images-tiff-/yius-inbn">Open Government Licence – City of Calgary</a>',
+          tiles: [
+              'https://api.mapbox.com/v4/camstark.d2tv0ze2/{z}/{x}/{y}@2x.png?access_token=' + mapboxgl.accessToken
+          ],
+          tileSize: 256
+      });
+
+      map.addLayer({
+          'id': 'solar-potential',
+          'type': 'raster',
+          'source': 'raster-tiles'
+      })
+  });
+
+  </script>
+</body>
+</html>
